@@ -31,7 +31,7 @@ app.MapControllers();
 app.Run();
 
 //UPPGIFT
-//Skapa ett litet .NET REST API  med "CRUD" funktioner för dessa 3 objekt:
+//Skapa ett litet .NET REST API med "CRUD" funktioner för dessa 3 objekt:
 //USER
 //ROLE
 //GROUP
@@ -46,10 +46,15 @@ app.Run();
 //En ROLE eller GROUP kan ha flera USERS
 
 //Funktioner i controllerna som skall finnas är CRUD:
-//CREATE - Skapa objekt
-//READ - Hämta upp ett objekt på ID/nyckel
-//READ - Hämta upp flera/lista på objekt med sökbegrep(filter på namn grupp/roll),
+
+//CREATE (POST) - Skapa objekt
+
+//READ (GET{Id}) - Hämta upp ett objekt på ID/nyckel
+
+//READ (GET) - Hämta upp flera/lista på objekt med sökbegrep(filter på namn grupp/roll),
 //ex alla USER som ligger i GROUP "abc"
-//UPDATE - Skall kunna updatera data på objektet
-//DELETE - Ta bort objekt, tänk på effekter som kan bli om det ligger relation
+
+//UPDATE (PUT{Id}) - Skall kunna updatera data på objektet
+
+//DELETE (DELETE{Id})- Ta bort objekt, tänk på effekter som kan bli om det ligger relation
 //mot objektet som skall tas bort...."validering" kan behövas.

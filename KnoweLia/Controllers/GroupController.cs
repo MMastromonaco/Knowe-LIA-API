@@ -14,9 +14,9 @@ namespace KnoweLia.Controllers
     [Route("/api")]
     public class GroupController : Controller
     {
-        private readonly LiaContext database;
+        private readonly KnoweLiaDbContext database;
 
-        public GroupController(LiaContext database)
+        public GroupController(KnoweLiaDbContext database)
         {
             this.database = database;
         }

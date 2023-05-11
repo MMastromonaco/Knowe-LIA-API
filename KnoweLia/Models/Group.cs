@@ -5,7 +5,7 @@ namespace KnoweLia.Models
 	public class Group
 	{
 		[Key]
-		public int GroupId { get; set; }
+		public Guid GroupId { get; set; }
 		public string Department{ get; set; }
 		public int Floor { get; set; }
 		// Navigation properties

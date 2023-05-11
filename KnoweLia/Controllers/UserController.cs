@@ -11,54 +11,85 @@ using KnoweLia.Models;
 namespace KnoweLia.Controllers
 {
 	[ApiController]
-	[Route("/api/users")]
+	[Route("/api/user")]
 	public class UserController : Controller
 	{
-		private readonly LiaContext database;
-
-		public UserController(LiaContext database)
+		private readonly KnoweLiaDbContext dbContext;
+		public UserController(KnoweLiaDbContext dbContext)
 		{
-			this.database = database;
+			this.dbContext = dbContext;
 		}
-
-		private static List<User> users = new List<User>
-	   {
-		   new User
-		   {
-			   UserId = 1,
-			   FirstName = "Martin",
-			   LastName = "Larsson",
-		   },
-		   new User
-		   {
-			   UserId = 2,
-			   FirstName = "Giovanni",
-			   LastName = "Mastromonaco"
-		   }
-	   };
 
 		[HttpGet]
-		public User[] Get()
+		public async Task<IActionResult> GetUsers()
 		{
-			return users.ToArray();
+			return Ok(await dbContext.Users.ToListAsync());
 		}
 
-		[HttpGet("{UserId}")]
-		//public User[] GetUsers()
-		//{
+		[HttpGet]
+		[Route("{userId:guid}")]
+		public async Task<IActionResult> GetUser([FromRoute] Guid userId)
+		{
+			var user = await dbContext.Users.FindAsync(userId);
 
-		//}
+			if(user == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(user);
+		}
 
 		[HttpPost]
-		public void AddUser(User user)
+		public async Task<IActionResult> AddUser(AddUserRequest addUserRequest)
 		{
-			user = new User
+			var user = new User()
 			{
-				UserId = 3,
-				FirstName = "Eric",
-				LastName = "Johansson"
+				UserId = Guid.NewGuid(),
+				FirstName = addUserRequest.FirstName,
+				LastName = addUserRequest.LastName,
+				Role = addUserRequest.Role,
 			};
-			users.Add(user);
+
+			await dbContext.Users.AddAsync(user);
+			await dbContext.SaveChangesAsync();
+
+			return Ok(user);
+		}
+
+		[HttpPut]
+		[Route("{userId:guid}")]
+		public async Task<IActionResult> UpdateUser([FromRoute] Guid userId, UpdateUserRequest updateUserRequest)
+		{
+			var user = await dbContext.Users.FindAsync(userId);
+
+			if (user != null)
+			{
+				user.FirstName = updateUserRequest.FirstName;
+				user.LastName = updateUserRequest.LastName;
+				user.Role = updateUserRequest.Role;
+
+				await dbContext.SaveChangesAsync();
+				return Ok(user);
+			}
+
+			return NotFound();
+		}
+
+		[HttpDelete]
+		[Route("{userId:Guid}")]
+		public async Task<IActionResult> DeleteUser([FromRoute] Guid userId)
+		{
+			var user = await dbContext.Users.FindAsync(userId);
+
+			if (user != null)
+			{
+				dbContext.Remove(user);
+				await dbContext.SaveChangesAsync();
+				return Ok(user);
+			}
+
+			return NotFound();
 		}
 	}
 }

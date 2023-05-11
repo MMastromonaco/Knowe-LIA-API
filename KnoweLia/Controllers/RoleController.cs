@@ -14,9 +14,9 @@ namespace KnoweLia.Controllers
 	[Route("/api")]
 	public class RoleController : Controller
 	{
-		private readonly LiaContext database;
+		private readonly KnoweLiaDbContext database;
 
-		public RoleController(LiaContext database)
+		public RoleController(KnoweLiaDbContext database)
 		{
 			this.database = database;
 		}

@@ -4,9 +4,9 @@ using KnoweLia.Models;
 
 namespace KnoweLia.Data
 {
-	public class LiaContext : DbContext
+	public class KnoweLiaDbContext : DbContext
 	{
-		public LiaContext(DbContextOptions<LiaContext> options)
+		public KnoweLiaDbContext(DbContextOptions<KnoweLiaDbContext> options)
 		: base(options)
 		{ 
 		}

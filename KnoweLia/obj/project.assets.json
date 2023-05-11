@@ -10972,11 +10972,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\larss\\Desktop\\OneDrive\\Documents\\GitHub\\Knowe-LIA-API\\KnoweLia\\KnoweLia.csproj",
+      "projectUniqueName": "C:\\Users\\larss\\OneDrive\\Documents\\GitHub\\Knowe-LIA-API\\KnoweLia\\KnoweLia.csproj",
       "projectName": "KnoweLia",
-      "projectPath": "C:\\Users\\larss\\Desktop\\OneDrive\\Documents\\GitHub\\Knowe-LIA-API\\KnoweLia\\KnoweLia.csproj",
+      "projectPath": "C:\\Users\\larss\\OneDrive\\Documents\\GitHub\\Knowe-LIA-API\\KnoweLia\\KnoweLia.csproj",
       "packagesPath": "C:\\Users\\larss\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\larss\\Desktop\\OneDrive\\Documents\\GitHub\\Knowe-LIA-API\\KnoweLia\\obj\\",
+      "outputPath": "C:\\Users\\larss\\OneDrive\\Documents\\GitHub\\Knowe-LIA-API\\KnoweLia\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\larss\\AppData\\Roaming\\NuGet\\NuGet.Config",

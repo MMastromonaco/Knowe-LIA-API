@@ -26,6 +26,21 @@ namespace KnoweLia.Controllers
 			return Ok(await dbContext.Users.ToListAsync());
 		}
 
+		//[HttpGet]
+		//public async Task<IActionResult> GetUsers([FromQuery] Guid? groupId)
+		//{
+		//	if (groupId.HasValue)
+		//	{
+		//		var users = await dbContext.Users
+		//			.Where(u => u.UserGroups.Any(ug => ug.GroupId == groupId.Value))
+		//			.ToListAsync();
+
+		//		return Ok(users);
+		//	}
+
+		//	return Ok(await dbContext.Users.ToListAsync());
+		//}
+
 		[HttpGet]
 		[Route("{userId:guid}")]
 		public async Task<IActionResult> GetUser([FromRoute] Guid userId)
@@ -48,7 +63,7 @@ namespace KnoweLia.Controllers
 				UserId = Guid.NewGuid(),
 				FirstName = addUserRequest.FirstName,
 				LastName = addUserRequest.LastName,
-				Role = addUserRequest.Role,
+				Role = addUserRequest.Role
 			};
 
 			await dbContext.Users.AddAsync(user);
@@ -82,14 +97,36 @@ namespace KnoweLia.Controllers
 		{
 			var user = await dbContext.Users.FindAsync(userId);
 
-			if (user != null)
+			if (user == null)
 			{
-				dbContext.Remove(user);
-				await dbContext.SaveChangesAsync();
-				return Ok(user);
+				return NotFound();
 			}
 
-			return NotFound();
+			// Explicitly load the associated Role entity
+			await dbContext.Entry(user).Reference(u => u.Role).LoadAsync();
+			var role = user.Role;
+
+			dbContext.Remove(user);
+			dbContext.Remove(role);
+			await dbContext.SaveChangesAsync();
+
+			return Ok(user);
 		}
+
+		//[HttpDelete]
+		//[Route("{userId:Guid}")]
+		//public async Task<IActionResult> DeleteUser([FromRoute] Guid userId)
+		//{
+		//	var user = await dbContext.Users.FindAsync(userId);
+
+		//	if (user != null)
+		//	{
+		//		dbContext.Remove(user);
+		//		await dbContext.SaveChangesAsync();
+		//		return Ok(user);
+		//	}
+
+		//	return NotFound();
+		//}
 	}
 }

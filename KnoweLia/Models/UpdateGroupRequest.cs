@@ -1,9 +1,8 @@
 ﻿namespace KnoweLia.Models
 {
-	public class AddGroupRequest
-	{	
+	public class UpdateGroupRequest
+	{
 		public string Department { get; set; }
 		public int Floor { get; set; }
-		//public List<User> Users { get; set; }		13/5
 	}
 }

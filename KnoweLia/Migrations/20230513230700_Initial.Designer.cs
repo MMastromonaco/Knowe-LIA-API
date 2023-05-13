@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KnoweLia.Migrations
 {
     [DbContext(typeof(KnoweLiaDbContext))]
-    [Migration("20230511135909_Initial")]
+    [Migration("20230513230700_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

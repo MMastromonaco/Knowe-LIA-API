@@ -20,28 +20,13 @@ namespace KnoweLia.Controllers
 			this.dbContext = dbContext;
 		}
 
-		[HttpGet]
+		[HttpGet]	//Get All Users
 		public async Task<IActionResult> GetUsers()
 		{
 			return Ok(await dbContext.Users.ToListAsync());
 		}
 
-		//[HttpGet]
-		//public async Task<IActionResult> GetUsers([FromQuery] Guid? groupId)
-		//{
-		//	if (groupId.HasValue)
-		//	{
-		//		var users = await dbContext.Users
-		//			.Where(u => u.UserGroups.Any(ug => ug.GroupId == groupId.Value))
-		//			.ToListAsync();
-
-		//		return Ok(users);
-		//	}
-
-		//	return Ok(await dbContext.Users.ToListAsync());
-		//}
-
-		[HttpGet]
+		[HttpGet]	//Get Specific User
 		[Route("{userId:guid}")]
 		public async Task<IActionResult> GetUser([FromRoute] Guid userId)
 		{
@@ -55,7 +40,7 @@ namespace KnoweLia.Controllers
 			return Ok(user);
 		}
 
-		[HttpPost]
+		[HttpPost]	//Create A User
 		public async Task<IActionResult> AddUser(AddUserRequest addUserRequest)
 		{
 			var user = new User()
@@ -72,7 +57,7 @@ namespace KnoweLia.Controllers
 			return Ok(user);
 		}
 
-		[HttpPut]
+		[HttpPut]	//Update Specific User
 		[Route("{userId:guid}")]
 		public async Task<IActionResult> UpdateUser([FromRoute] Guid userId, UpdateUserRequest updateUserRequest)
 		{
@@ -91,7 +76,7 @@ namespace KnoweLia.Controllers
 			return NotFound();
 		}
 
-		[HttpDelete]
+		[HttpDelete]	//Delete Specific User
 		[Route("{userId:Guid}")]
 		public async Task<IActionResult> DeleteUser([FromRoute] Guid userId)
 		{
@@ -105,28 +90,17 @@ namespace KnoweLia.Controllers
 			// Explicitly load the associated Role entity
 			await dbContext.Entry(user).Reference(u => u.Role).LoadAsync();
 			var role = user.Role;
+			// Explicitly load the associated UserGroup entity
+			// userGroup might cause problem	13/5
+			await dbContext.Entry(user).Reference(u => u.UserGroups).LoadAsync();
+			var userGroup = user.UserGroups;
 
-			dbContext.Remove(user);
-			dbContext.Remove(role);
+			dbContext.Remove(role);         // Remove all associated UserGroups
+			dbContext.Remove(userGroup);    // Remove all associated UserGroups
+			dbContext.Remove(user);			// Remove the user itself
 			await dbContext.SaveChangesAsync();
 
 			return Ok(user);
 		}
-
-		//[HttpDelete]
-		//[Route("{userId:Guid}")]
-		//public async Task<IActionResult> DeleteUser([FromRoute] Guid userId)
-		//{
-		//	var user = await dbContext.Users.FindAsync(userId);
-
-		//	if (user != null)
-		//	{
-		//		dbContext.Remove(user);
-		//		await dbContext.SaveChangesAsync();
-		//		return Ok(user);
-		//	}
-
-		//	return NotFound();
-		//}
 	}
 }

@@ -57,6 +57,30 @@ namespace KnoweLia.Controllers
 			return Ok(user);
 		}
 
+		[HttpPost]  // Add User to Group
+		[Route("{userId:guid}/groups/{groupId:guid}")]
+		public async Task<IActionResult> AddUserToGroup([FromRoute] Guid userId, [FromRoute] Guid groupId)
+		{
+			var user = await dbContext.Users.FindAsync(userId);
+			var group = await dbContext.Groups.FindAsync(groupId);
+
+			if (user == null || group == null)
+			{
+				return NotFound();
+			}
+
+			var userGroup = new UserGroup
+			{
+				UserId = userId,
+				GroupId = groupId
+			};
+
+			dbContext.UserGroups.Add(userGroup);
+			await dbContext.SaveChangesAsync();
+
+			return Ok(userGroup);
+		}
+
 		[HttpPut]	//Update Specific User
 		[Route("{userId:guid}")]
 		public async Task<IActionResult> UpdateUser([FromRoute] Guid userId, UpdateUserRequest updateUserRequest)
@@ -101,6 +125,23 @@ namespace KnoweLia.Controllers
 			await dbContext.SaveChangesAsync();
 
 			return Ok(user);
+		}
+
+		[HttpDelete]    // Remove User from Group
+		[Route("{userId:guid}/groups/{groupId:guid}")]
+		public async Task<IActionResult> RemoveUserFromGroup([FromRoute] Guid userId, [FromRoute] Guid groupId)
+		{
+			var userGroup = await dbContext.UserGroups.FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GroupId == groupId);
+
+			if (userGroup == null)
+			{
+				return NotFound();
+			}
+
+			dbContext.UserGroups.Remove(userGroup);
+			await dbContext.SaveChangesAsync();
+
+			return Ok(userGroup);
 		}
 	}
 }

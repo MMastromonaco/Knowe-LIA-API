@@ -116,11 +116,10 @@ namespace KnoweLia.Controllers
 			var role = user.Role;
 			// Explicitly load the associated UserGroup entity
 			// userGroup might cause problem	13/5
-			await dbContext.Entry(user).Reference(u => u.UserGroups).LoadAsync();
+			await dbContext.Entry(user).Collection(u => u.UserGroups).LoadAsync();
 			var userGroup = user.UserGroups;
-
-			dbContext.Remove(role);         // Remove all associated UserGroups
-			dbContext.Remove(userGroup);    // Remove all associated UserGroups
+         
+			dbContext.RemoveRange(userGroup);    // Remove all associated UserGroups
 			dbContext.Remove(user);			// Remove the user itself
 			await dbContext.SaveChangesAsync();
 
